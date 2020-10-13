@@ -1,14 +1,20 @@
 // this stuff is the same for all route modules
 const express = require('express');
 const router = express.Router();
-
+const pool = require('../modules/pool');
 const history = require('../modules/history');
 
 
 // get history
 router.get('/', ( req, res )=>{
-    console.log( '/math GET hit' );
-    res.send( history );
+    // console.log( '/math GET hit' );
+    // res.send( history );
+    //GET data from the database
+    let queryText = 'SELECT * FROM "history";'
+    pool.query(queryText).then((result) => {
+        console.log('result from database', result.rows);
+        res.send( result.rows );
+    }) 
 }) // end /math GET
 
 // post for new equation
